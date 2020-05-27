@@ -1,4 +1,10 @@
 {
-    "welcome_channel": 714981607169196072,
-    "welcome_message": "Welcome ${name} to our Discord server!"
+    "welcome_channel": <Put channel id here>,
+    "welcome_message": "Welcome ${name} to our Discord server!",
+    "manager_role": <Put role id here>,
+    "echos" : {
+        "foo":"bar",
+        "ping":"pong"
+    },
+    "shutdown_list" : []
 }
