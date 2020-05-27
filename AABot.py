@@ -6,6 +6,10 @@ import shutil
 import string
 from dotenv import load_dotenv
 
+if not os.path.exists('.env'):
+    shutil.copyfile('default.env', '.env')
+    print('\n.ENV NOT FOUND.\n.ENV HAS BEEN CREATED FROM DEFAULTS.\nPLEASE CUSTOMIZE .ENV AND RESTART THE BOT.')
+
 #Load environment variables from .env
 load_dotenv()
 TOK = os.getenv('DISCORD_TOKEN')
