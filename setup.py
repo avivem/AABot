@@ -7,5 +7,5 @@ setup(
     author='Aviv Elazar-Mittelman',
     author_email='avivelazarmittelman@gmail.com',
     packages=['AABot'],
-    install_requires=['discord.py']
+    install_requires=['discord.py','python-dotenv']
 )
