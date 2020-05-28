@@ -1,6 +1,6 @@
 # AABot
 A simple Discord bot written in Python using the Discord.py API
-Inspired by https://realpython.com/how-to-make-a-discord-bot-python/#how-to-make-a-discord-bot-in-python
+Inspired by [this guide](https://realpython.com/how-to-make-a-discord-bot-python/#how-to-make-a-discord-bot-in-python)
 
 ### Supported Commands
 List of commands supported by AABot. Some commands require special permissions. Consult your server owner for assistance.
