@@ -3,8 +3,15 @@
     "welcome_message": "Welcome ${name} to our Discord server!",
     "manager_role": <Put role id here>,
     "echos" : {
+        "example_echo_command": "example_echo_response",
         "foo":"bar",
         "ping":"pong"
     },
-    "shutdown_list" : []
+    "shutdown_list" : [],
+    "role_access": {
+        <role id here>: {
+            "c_id":<channel to ping when role given here>,
+            "message":"Welcome ${name} to the ${c_name} channel"
+        }
+    }
 }
