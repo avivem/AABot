@@ -16,15 +16,21 @@ TOK = os.getenv('DISCORD_TOKEN')
 GLD = os.getenv('DISCORD_GUILD')
 PREFIX = os.getenv('PREFIX')
 
+print(f'Discord API token: {TOK}')
 
 
 #Load config
 if not os.path.exists('config.json'):
     shutil.copyfile('default_config.json', 'config.json')
     print('\nCONFIG.JSON NOT FOUND.\nCONFIG.JSON HAS BEEN CREATED FROM DEFAULTS.\nPLEASE CUSTOMIZE CONFIG.JSON AND RESTART THE BOT.')
-with open('config.json') as f:
-    config = json.load(f)
 
+#Reload the config from local file.
+def reload_config():
+    with open('config.json') as f:
+        config = json.load(f)
+    return config
+
+config = reload_config()
 bot = commands.Bot(command_prefix=PREFIX)
 #On bot startup
 @bot.event
@@ -64,6 +70,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 @bot.command(name='ecreate')
 @commands.has_role(config["manager_role"])
 async def ecreate(context: commands.Context, com_name, echo):
+    
     stripped = com_name.strip('\"')
     with open('config.json', 'w') as f:
         action = 'updated' if stripped in config["echos"] else 'created'
@@ -81,6 +88,7 @@ async def ecreate_error(context: commands.Context, error):
 #Command for listing all echos.
 @bot.command(name='elist')
 async def elist(context: commands.Context):
+    config = reload_config()
     embed = discord.Embed(title="List of Echos")
     for echo in config["echos"]:
         embed.add_field(name=echo, value=config["echos"][echo])
@@ -89,6 +97,8 @@ async def elist(context: commands.Context):
 #Command for executing echos.
 @bot.command(name='e')
 async def echo(context: commands.Context, com_name):
+    #For convenience, reload config from file so that echos can be created in JSON.
+    config = reload_config()
     stripped = com_name.strip('\"')
     if stripped in config["echos"]:
         await context.send(config["echos"][stripped])
@@ -120,11 +130,23 @@ async def mass_remove_role(context: commands.Context):
             await member.remove_roles(role)
     await context.send(f'Removed the {role} role from everyone except the Owner and bots.')
 
+#execute an echo in another channel.
+@bot.command(name="te")
+async def targeted_echo(context: commands.Context, com_name, target_channel):
+    channel = await bot.fetch_channel(target_channel)
+    config = reload_config()
+    stripped = com_name.strip('\"')
+    if stripped in config["echos"]:
+        await channel.send(config["echos"][stripped])
+    else:
+        await context.send("Invalid Echo.")
+
 @bot.command(name="command_list")
 async def command_list(context: commands.Context):
     description="List of commands supported by AABot. Some commands require special permissions. Consult your server owner for assistance."
     embed = discord.Embed(title="List of Commands", description=description)
     embed.add_field(name=f'{PREFIX}e <echo_name>', value=f'The echo command. If an echo exists in the Echo List ({PREFIX}elist), a specific response will be returned.')
+    embed.add_field(name=f'{PREFIX}te <echo_name> <target_channel_id' , value = f'Execute an echo in the target channel')
     embed.add_field(name=f'{PREFIX}elist', value=f'Returns a list of all possible echos.')
     embed.add_field(name=f'{PREFIX}ecreate <echo_name> <echo_response', value=f'Creates a new echo with specified name and response. Requires permissions of server owners.')
     embed.add_field(name=f'{PREFIX}mass_give_role <role_id>', value=f'Gives everyone except the owner and bots the specified role.')
