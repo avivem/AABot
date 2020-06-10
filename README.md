@@ -6,7 +6,7 @@ Inspired by [this guide](https://realpython.com/how-to-make-a-discord-bot-python
 List of commands supported by AABot. Some commands require special permissions. Consult your server owner for assistance.
 * \<prefix>e <echo_name>
   * The echo command. If an echo exists in the Echo List (aa!elist), a specific response will be returned.
-* \<PREFIX>te <echo_name> <target_channel_id>
+* \<prefix>te <echo_name> <target_channel_id>
   * Execute an echo in the target channel.
 * \<prefix>elist
   * Returns a list of all possible echos.
